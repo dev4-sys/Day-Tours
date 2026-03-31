@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, ChevronDown, Menu, X, ChevronUp, ChevronLeft, ChevronRight, CheckCircle2, MapPin, Search, ThumbsUp, Compass } from 'lucide-react'; 
 
+// --- NEW COMPONENT FOR REAL TIME COUNTING ---
+const AnimatedCounter = ({ target, duration = 2000 }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      setCount(Math.floor(progress * target));
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [target, duration]);
+
+  return <span>{count.toLocaleString()} +</span>;
+};
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -130,6 +150,8 @@ function App() {
           .plan-check-item { justify-content: center !important; }
           .features-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
           .feature-card { border-radius: 10px !important; }
+          .counter-divider { display: none; }
+          .counter-item { width: 100% !important; border-bottom: 1px solid #eee; }
         }
         
         .nav-item { cursor: pointer; transition: 0.2s; color: #555; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 4px; height: 100px; list-style: none; }
@@ -158,7 +180,6 @@ function App() {
         }
         .btn-green-main:hover { background-color: #356E6E; color: white; transform: scale(1.05); }
 
-        /* MODIFIED: Feature Card Styles with Space and Hover Animation */
         .feature-card {
             padding: 50px 25px;
             text-align: center;
@@ -202,7 +223,6 @@ function App() {
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
-        /* Hover states for internal elements */
         .feature-card:hover h3, 
         .feature-card:hover p, 
         .feature-card:hover .feature-icon {
@@ -363,7 +383,7 @@ function App() {
         </div>
       </div>
 
-      {/* --- SECTION 3: FEATURES GRID (MODIFIED WITH SPACING & HOVER) --- */}
+      {/* --- SECTION 3: FEATURES GRID --- */}
       <div style={{ backgroundColor: '#F8F9FA', padding: '100px 0' }}>
         <div className="features-grid" style={{ 
             maxWidth: '1200px', 
@@ -396,6 +416,38 @@ function App() {
             <Compass size={44} className="feature-icon" />
             <h3>Go Out & Explore<br/>Now</h3>
             <p>Unforgettable journey and experience the beauty and excitement of Auckland today!</p>
+          </div>
+
+        </div>
+      </div>
+
+      {/* --- NEW COUNTER SECTION SHIFTED ABOVE FOOTER --- */}
+      <div style={{ padding: '80px 0', borderTop: '1px solid #eee', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+          
+          <div className="counter-item" style={{ flex: '1', textAlign: 'center', padding: '20px', minWidth: '200px' }}>
+            <div style={{ fontFamily: '"Brush Script MT", cursive', fontSize: '48px', color: '#4A7677', marginBottom: '5px' }}>
+              <AnimatedCounter target={4000} />
+            </div>
+            <div style={{ fontSize: '16px', color: '#777', fontWeight: '500' }}>Successful Tours</div>
+          </div>
+
+          <div className="counter-divider" style={{ width: '1px', height: '70px', backgroundColor: '#ddd' }}></div>
+
+          <div className="counter-item" style={{ flex: '1', textAlign: 'center', padding: '20px', minWidth: '200px' }}>
+            <div style={{ fontFamily: '"Brush Script MT", cursive', fontSize: '48px', color: '#4A7677', marginBottom: '5px' }}>
+              <AnimatedCounter target={5000} />
+            </div>
+            <div style={{ fontSize: '16px', color: '#777', fontWeight: '500' }}>Travel Agents</div>
+          </div>
+
+          <div className="counter-divider" style={{ width: '1px', height: '70px', backgroundColor: '#ddd' }}></div>
+
+          <div className="counter-item" style={{ flex: '1', textAlign: 'center', padding: '20px', minWidth: '200px' }}>
+            <div style={{ fontFamily: '"Brush Script MT", cursive', fontSize: '48px', color: '#4A7677', marginBottom: '5px' }}>
+              <AnimatedCounter target={14000} />
+            </div>
+            <div style={{ fontSize: '16px', color: '#777', fontWeight: '500' }}>Happy People</div>
           </div>
 
         </div>
