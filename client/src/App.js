@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, ChevronDown, Menu, X, ChevronUp, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react'; 
+import { Phone, ChevronDown, Menu, X, ChevronUp, ChevronLeft, ChevronRight, CheckCircle2, MapPin, Search, ThumbsUp, Compass } from 'lucide-react'; 
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -7,12 +7,12 @@ function App() {
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
   // --- Carousel State & Logic ---
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const carouselData = [
+  const [carouselData] = useState([
     { img: "/DT_Auckland.jpg", title: "Auckland ?" },
     { img: "/DT_Christchurch.jpg", title: "Christchurch ?" },
     { img: "/DT_Queenstown.jpg", title: "Queenstown ?" }
-  ];
+  ]);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const slideInterval = setInterval(() => {
@@ -70,23 +70,41 @@ function App() {
         .hero-subtitle { font-size: 38px; }
         .hero-title { font-size: 110px; }
 
-        /* Badge Logic */
+        .social-icon { cursor: pointer; transition: opacity 0.2s; font-size: 14px; }
+        .social-icon:hover { opacity: 0.7; }
+
+        .social-box {
+          width: 35px;
+          height: 35px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #356E6E;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        .social-box:hover {
+          background-color: #356E6E;
+          color: white;
+          border-color: #356E6E;
+        }
+
         .call-badge {
           text-decoration: none;
           position: absolute; 
           bottom: 40px; 
           left: 30px;
           background-color: white; 
-          padding: 12px 20px; 
-          border-radius: 10px; 
-          box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+          padding: 15px 25px; 
+          border-radius: 12px; 
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 15px;
           z-index: 10;
-          transition: transform 0.2s ease;
         }
-        .call-badge:hover { transform: scale(1.05); }
 
         @media (max-width: 1024px) {
           .top-bar { display: none !important; }
@@ -98,10 +116,10 @@ function App() {
           .mobile-menu-overlay { display: flex; position: fixed; top: 80px; left: 0; width: 100%; height: calc(100vh - 80px); background-color: white; z-index: 999; flex-direction: column; overflow-y: auto; }
           .footer-container { flex-direction: column !important; text-align: center !important; gap: 30px !important; }
           .address-grid { grid-template-columns: 1fr !important; text-align: center !important; gap: 30px !important; }
-          .process-badges-row { justify-content: center !important; flex-direction: column !important; gap: 30px !important; align-items: center !important; }
-          .process-badges-row img { height: auto !important; width: 90% !important; max-width: 350px !important; margin: 0 auto; }
+          .process-badges-row { justify-content: center !important; flex-direction: column !important; gap: 20px !important; align-items: center !important; }
+          .process-badges-row img { height: auto !important; width: 80% !important; max-width: 280px !important; margin: 0 auto; }
           .company-col { text-align: center !important; display: flex; flex-direction: column; align-items: center; }
-          .company-col img { width: 90% !important; max-width: 350px !important; margin: 0 auto !important; }
+          .company-col img { width: 80% !important; max-width: 280px !important; margin: 0 auto !important; }
           .hero-subtitle { font-size: 22px !important; }
           .hero-title { font-size: 55px !important; }
           .carousel-container { height: 450px !important; }
@@ -110,17 +128,8 @@ function App() {
           .plan-image-wrapper { width: 100% !important; }
           .plan-content-wrapper { width: 100% !important; margin-top: 40px !important; }
           .plan-check-item { justify-content: center !important; }
-
-          /* Small Badge for Mobile */
-          .call-badge {
-            bottom: 20px !important;
-            left: 20px !important;
-            padding: 8px 12px !important;
-          }
-          .badge-icon-container { padding: 6px !important; }
-          .badge-icon-svg { width: 14px !important; height: 14px !important; }
-          .badge-text-top { font-size: 7px !important; }
-          .badge-text-num { font-size: 12px !important; }
+          .features-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+          .feature-card { border-radius: 10px !important; }
         }
         
         .nav-item { cursor: pointer; transition: 0.2s; color: #555; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 4px; height: 100px; list-style: none; }
@@ -149,8 +158,60 @@ function App() {
         }
         .btn-green-main:hover { background-color: #356E6E; color: white; transform: scale(1.05); }
 
-        .social-box { background-color: #356E6E; color: white; width: 38px; height: 38px; border-radius: 5px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .social-icon { color: white; cursor: pointer; font-size: 14px; transition: 0.2s; padding: 0 5px; }
+        /* MODIFIED: Feature Card Styles with Space and Hover Animation */
+        .feature-card {
+            padding: 50px 25px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white; 
+            color: #264F4F;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            background-color: #4A7677;
+            box-shadow: 0 15px 35px rgba(53, 110, 110, 0.3);
+        }
+
+        .feature-card h3 {
+            color: #264F4F;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        .feature-icon {
+            color: #356E6E;
+            margin-bottom: 25px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Hover states for internal elements */
+        .feature-card:hover h3, 
+        .feature-card:hover p, 
+        .feature-card:hover .feature-icon {
+            color: white !important;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
       `}</style>
 
       {/* HEADER */}
@@ -166,7 +227,7 @@ function App() {
               <i className="fa-brands fa-instagram social-icon"></i>
               <i className="fa-brands fa-youtube social-icon"></i>
               <i className="fa-brands fa-linkedin-in social-icon"></i>
-              <span style={{ fontWeight: '900', fontSize: '14px', cursor: 'pointer', padding: '0 5px' }}>X</span>
+              <span style={{ fontWeight: '900', fontSize: '14px', cursor: 'pointer', padding: '0 5px' }} className="social-icon">X</span>
               <i className="fa-brands fa-pinterest social-icon"></i>
               <button style={{ backgroundColor: '#00A1B1', border: 'none', color: 'white', height: '45px', padding: '0 25px', cursor: 'pointer', fontWeight: 'bold', fontSize: '12px', marginLeft: '10px' }}>
                 EMAIL US HERE
@@ -200,12 +261,7 @@ function App() {
               </ul>
             </div>
             <div className="desktop-button-right" style={{ flex: '0 0 auto' }}>
-              <a 
-                href="https://drive.google.com/file/d/1u3w4y27UTtw0mUe0WI3cj0VrC-v5Ju4i/view" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ textDecoration: 'none' }}
-              >
+              <a href="https://drive.google.com/file/d/1u3w4y27UTtw0mUe0WI3cj0VrC-v5Ju4i/view" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                 <button style={{ backgroundColor: '#264F4F', color: 'white', border: 'none', padding: '12px 28px', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' }}>
                   Download Day Tours
                 </button>
@@ -235,23 +291,17 @@ function App() {
         </nav>
       </header>
 
-      {/* --- CAROUSEL SECTION --- */}
+      {/* --- SECTION 1: CAROUSEL --- */}
       <div className="carousel-container" style={{ position: 'relative', width: '100%', height: '650px', backgroundColor: '#000', overflow: 'hidden' }}>
         {carouselData.map((slide, index) => (
           index === currentSlide && (
-            <div key={`${index}-${currentSlide}`} style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <div key={currentSlide} style={{ width: '100%', height: '100%', position: 'relative' }}>
               <div
                 className="zoom-anim"
                 style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
+                  position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                   backgroundImage: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${slide.img})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  zIndex: 5
+                  backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 5
                 }}
               />
               <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', color: 'white', zIndex: 10, width: '100%' }}>
@@ -274,23 +324,18 @@ function App() {
         <button onClick={nextSlide} className="carousel-btn" style={{ right: '30px' }}><ChevronRight size={30} /></button>
       </div>
 
-      {/* --- PLAN YOUR TRIP SECTION --- */}
+      {/* --- SECTION 2: PLAN YOUR TRIP --- */}
       <div className="plan-section-container" style={{ display: 'flex', maxWidth: '1200px', margin: '100px auto', padding: '0 20px', gap: '60px', alignItems: 'center' }}>
         <div className="plan-image-wrapper" style={{ flex: '1', position: 'relative' }}>
-          <img 
-            src="/tour-11-768x539.jpg" 
-            alt="New Zealand Day Tour" 
-            style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', display: 'block' }} 
-          />
+          <img src="/tour-11-768x539.jpg" alt="New Zealand Day Tour" style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', display: 'block' }} />
           
-          {/* COMPACT FLOATING CALL BADGE (CLICKABLE & RESPONSIVE) */}
           <a href="tel:+64212788915" className="call-badge">
-            <div className="badge-icon-container" style={{ backgroundColor: '#f0f7f7', padding: '8px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Phone size={18} color="#356E6E" className="badge-icon-svg" />
+            <div style={{ backgroundColor: '#F0F8F8', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Phone size={22} color="#356E6E" />
             </div>
             <div>
-              <p className="badge-text-top" style={{ margin: 0, fontSize: '9px', color: '#888', fontWeight: 'bold', letterSpacing: '0.5px' }}>BOOK TOUR NOW</p>
-              <p className="badge-text-num" style={{ margin: 0, fontSize: '15px', color: '#264F4F', fontWeight: '800' }}>+64 212 788 915</p>
+              <p style={{ margin: 0, fontSize: '11px', color: '#8E9999', fontWeight: '700', letterSpacing: '1px' }}>BOOK TOUR NOW</p>
+              <p style={{ margin: 0, fontSize: '20px', color: '#264F4F', fontWeight: '800' }}>+64 212 788 915</p>
             </div>
           </a>
         </div>
@@ -312,79 +357,105 @@ function App() {
               <CheckCircle2 size={22} color="#356E6E" /> Premium Transport Vehicles
             </div>
           </div>
-          <button style={{ 
-            backgroundColor: '#356E6E', 
-            color: 'white', 
-            border: 'none', 
-            padding: '20px 45px', 
-            borderRadius: '10px', 
-            fontWeight: 'bold', 
-            cursor: 'pointer',
-            fontSize: '16px',
-            transition: '0.3s',
-            boxShadow: '0 10px 20px rgba(53, 110, 110, 0.2)'
-          }}>
+          <button style={{ backgroundColor: '#356E6E', color: 'white', border: 'none', padding: '20px 45px', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer', fontSize: '16px', transition: '0.3s', boxShadow: '0 10px 20px rgba(53, 110, 110, 0.2)' }}>
             BOOK WITH US NOW
           </button>
         </div>
       </div>
 
+      {/* --- SECTION 3: FEATURES GRID (MODIFIED WITH SPACING & HOVER) --- */}
+      <div style={{ backgroundColor: '#F8F9FA', padding: '100px 0' }}>
+        <div className="features-grid" style={{ 
+            maxWidth: '1200px', 
+            margin: '0 auto', 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(4, 1fr)', 
+            gap: '25px', 
+            padding: '0 20px' 
+        }}>
+          
+          <div className="feature-card">
+            <MapPin size={44} className="feature-icon" />
+            <h3>Choose<br/>Destinations</h3>
+            <p>Discover a world of breathtaking locations, from vibrant cities to serene natural escapes.</p>
+          </div>
+
+          <div className="feature-card">
+            <Search size={44} className="feature-icon" />
+            <h3>Find What You<br/>Want</h3>
+            <p>Explore Auckland's hidden gems, iconic landmarks, and must-visit attractions tailored to your interests.</p>
+          </div>
+
+          <div className="feature-card">
+            <ThumbsUp size={44} className="feature-icon" />
+            <h3>Select the Best<br/>Place</h3>
+            <p>From stunning beaches to cultural hotspots, find the perfect destination for your next adventure.</p>
+          </div>
+
+          <div className="feature-card">
+            <Compass size={44} className="feature-icon" />
+            <h3>Go Out & Explore<br/>Now</h3>
+            <p>Unforgettable journey and experience the beauty and excitement of Auckland today!</p>
+          </div>
+
+        </div>
+      </div>
+
       {/* FOOTER SECTION */}
-      <footer style={{ borderTop: '1px dashed #ccc', paddingTop: '40px' }}>
-        <div className="footer-container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '40px' }}>
-          <div style={{ flex: '3' }}>
-            <div style={{ color: '#356E6E', fontWeight: 'bold', fontSize: '20px', marginBottom: '20px' }}>Our Process</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <div className="process-badges-row" style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', alignItems: 'center' }}>
-                <img src="/Footer2.png" alt="Economy Price" className="responsive-img" style={{ height: '95px', width: 'auto' }} />
-                <img src="/process-2-1.png" className="responsive-img" style={{ height: '90px', width: 'auto' }} />
-              </div>
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '10px' }} className="process-badges-row">
-                <img src="/footer-logo.png" alt="Aussie Specialist" className="responsive-img specialist-logo" style={{ height: '125px', width: 'auto' }} />
-              </div>
+      <footer style={{ borderTop: '1px dashed #ccc', paddingTop: '60px', backgroundColor: '#fff' }}>
+        <div className="footer-container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ flex: '1' }}>
+            <div style={{ color: '#356E6E', fontWeight: 'bold', fontSize: '18px', marginBottom: '25px', letterSpacing: '1px' }}>OUR PROCESS</div>
+            <div className="process-badges-row" style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <img src="/Footer2.png" alt="Economy Price" className="responsive-img" style={{ height: '80px', width: 'auto' }} />
+              <img src="/process-2-1.png" alt="Process" className="responsive-img" style={{ height: '80px', width: 'auto' }} />
+              <img src="/footer-logo.png" alt="Aussie Specialist" className="responsive-img" style={{ height: '100px', width: 'auto' }} />
             </div>
           </div>
-          <div className="company-col" style={{ flex: '1', textAlign: 'right' }}>
-            <div style={{ color: '#356E6E', fontWeight: 'bold', fontSize: '20px', marginBottom: '20px' }}>Our Companies</div>
-            <img src="/pds_header_org.png" alt="Perfect Designing" className="responsive-img" style={{ width: '300px', height: 'auto', marginLeft: 'auto' }} />
+          
+          <div className="company-col" style={{ flex: '0 0 auto', textAlign: 'right' }}>
+            <div style={{ color: '#356E6E', fontWeight: 'bold', fontSize: '18px', marginBottom: '25px', letterSpacing: '1px' }}>OUR COMPANIES</div>
+            <img src="/pds_header_org.png" alt="Perfect Designing" className="responsive-img" style={{ width: '280px', height: 'auto', marginLeft: 'auto' }} />
           </div>
         </div>
 
-        <div style={{ borderTop: '1px dashed #ccc', marginTop: '40px', padding: '40px 0' }}>
-            <div className="address-grid" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 20px', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px' }}>
+        <div style={{ borderTop: '1px dashed #ccc', marginTop: '60px', padding: '50px 0' }}>
+            <div className="address-grid" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 20px', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '30px' }}>
                 <div>
-                  <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '12px' }}>India</div>
-                  <div style={{ color: '#777', fontSize: '13.5px', lineHeight: '1.8' }}>AHMEDABAD<br/>601, Abhishree Avenue, Opp. Hanumanji Temple, Nr. Nehru Nagar Circle, Ahmedabad - 15, Gujarat</div>
+                  <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '15px', fontSize: '14px' }}>INDIA</div>
+                  <div style={{ color: '#777', fontSize: '13px', lineHeight: '1.8' }}><strong>AHMEDABAD</strong><br/>601, Abhishree Avenue, Opp. Hanumanji Temple, Nr. Nehru Nagar Circle, Ahmedabad - 15, Gujarat</div>
                 </div>
                 <div>
-                  <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '12px' }}>New Zealand</div>
-                  <div style={{ color: '#777', fontSize: '13.5px', lineHeight: '1.8' }}>AUCKLAND<br/>5, McGowan Street, Mt. Roskill, Auckland 1041.</div>
+                  <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '15px', fontSize: '14px' }}>NEW ZEALAND</div>
+                  <div style={{ color: '#777', fontSize: '13px', lineHeight: '1.8' }}><strong>AUCKLAND</strong><br/>5, McGowan Street, Mt. Roskill, Auckland 1041.</div>
                 </div>
                 <div>
-                  <div style={{ visibility: 'hidden' }}>Dunedin</div>
-                  <div style={{ color: '#777', fontSize: '13.5px', lineHeight: '1.8' }}>DUNEDIN<br/>63-B, Royal Crescent, Saint Kilda, Dunedin 9012.</div>
+                  <div style={{ visibility: 'hidden', marginBottom: '15px' }}>.</div>
+                  <div style={{ color: '#777', fontSize: '13px', lineHeight: '1.8' }}><strong>DUNEDIN</strong><br/>63-B, Royal Crescent, Saint Kilda, Dunedin 9012.</div>
                 </div>
                 <div>
-                  <div style={{ visibility: 'hidden' }}>Queenstown</div>
-                  <div style={{ color: '#777', fontSize: '13.5px', lineHeight: '1.8' }}>QUEENSTOWN<br/>9 Tewa Street, Frankton, Queenstown 9300.</div>
+                  <div style={{ visibility: 'hidden', marginBottom: '15px' }}>.</div>
+                  <div style={{ color: '#777', fontSize: '13px', lineHeight: '1.8' }}><strong>QUEENSTOWN</strong><br/>9 Tewa Street, Frankton, Queenstown 9300.</div>
                 </div>
                 <div>
-                  <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '12px' }}>Australia</div>
-                  <div style={{ color: '#777', fontSize: '13.5px', lineHeight: '1.8' }}>SYDNEY<br/>Llyod Street, Werrington, NSW 2747.</div>
+                  <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '15px', fontSize: '14px' }}>AUSTRALIA</div>
+                  <div style={{ color: '#777', fontSize: '13px', lineHeight: '1.8' }}><strong>SYDNEY</strong><br/>Llyod Street, Werrington, NSW 2747.</div>
                 </div>
             </div>
         </div>
 
-        <div style={{ borderTop: '1px dashed #ccc', padding: '40px 0', textAlign: 'center' }}>
+        <div style={{ backgroundColor: '#fdfdfd', borderTop: '1px solid #eee', padding: '40px 0', textAlign: 'center' }}>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '25px' }}>
                 {['facebook-f', 'instagram', 'youtube', 'linkedin-in'].map(icon => (
                     <div key={icon} className="social-box"><i className={`fa-brands fa-${icon}`}></i></div>
                 ))}
-                <div className="social-box"><span style={{ fontWeight: 'bold' }}>X</span></div>
+                <div className="social-box"><span style={{ fontWeight: 'bold', fontSize: '14px' }}>X</span></div>
                 <div className="social-box"><i className="fa-brands fa-pinterest"></i></div>
             </div>
-            <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '15px' }}>TERMS & CONDITIONS | FAQS | PRIVACY POLICY</div>
-            <div style={{ color: '#888', fontSize: '13px' }}>© 2014-2025, Freedom Tourism Ltd., All Rights Reserved</div>
+            <div style={{ color: '#356E6E', fontWeight: 'bold', marginBottom: '15px', fontSize: '12px', letterSpacing: '1px', cursor: 'pointer' }}>
+              TERMS & CONDITIONS &nbsp; | &nbsp; FAQS &nbsp; | &nbsp; PRIVACY POLICY
+            </div>
+            <div style={{ color: '#aaa', fontSize: '12px' }}>© 2014-2026 Freedom Tourism Ltd. All Rights Reserved.</div>
         </div>
       </footer>
     </div>
