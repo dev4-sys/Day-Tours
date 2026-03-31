@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, ChevronDown, Menu, X, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react'; 
+import { Phone, ChevronDown, Menu, X, ChevronUp, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react'; 
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,7 +48,6 @@ function App() {
         .mobile-menu-overlay { display: none; }
         .responsive-img { max-width: 100%; height: auto; display: block; }
 
-        /* --- Advanced Carousel Animations --- */
         @keyframes zoomSlow {
           from { transform: scale(1); }
           to { transform: scale(1.1); }
@@ -68,9 +67,26 @@ function App() {
         .reveal-right-anim { animation: revealRight 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .fade-in-scale-anim { animation: fadeInScale 0.7s ease-out both; }
 
-        /* HERO TITLE SIZING */
         .hero-subtitle { font-size: 38px; }
         .hero-title { font-size: 110px; }
+
+        /* Badge Logic */
+        .call-badge {
+          text-decoration: none;
+          position: absolute; 
+          bottom: 40px; 
+          left: 30px;
+          background-color: white; 
+          padding: 12px 20px; 
+          border-radius: 10px; 
+          box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          z-index: 10;
+          transition: transform 0.2s ease;
+        }
+        .call-badge:hover { transform: scale(1.05); }
 
         @media (max-width: 1024px) {
           .top-bar { display: none !important; }
@@ -82,31 +98,29 @@ function App() {
           .mobile-menu-overlay { display: flex; position: fixed; top: 80px; left: 0; width: 100%; height: calc(100vh - 80px); background-color: white; z-index: 999; flex-direction: column; overflow-y: auto; }
           .footer-container { flex-direction: column !important; text-align: center !important; gap: 30px !important; }
           .address-grid { grid-template-columns: 1fr !important; text-align: center !important; gap: 30px !important; }
-          
-          /* ENHANCED LOGO VISIBILITY FOR MOBILE */
-          .process-badges-row { 
-            justify-content: center !important; 
-            flex-direction: column !important; 
-            gap: 30px !important;
-            align-items: center !important;
-          }
-          .process-badges-row img {
-            height: auto !important;
-            width: 90% !important;
-            max-width: 350px !important;
-            margin: 0 auto;
-          }
-
+          .process-badges-row { justify-content: center !important; flex-direction: column !important; gap: 30px !important; align-items: center !important; }
+          .process-badges-row img { height: auto !important; width: 90% !important; max-width: 350px !important; margin: 0 auto; }
           .company-col { text-align: center !important; display: flex; flex-direction: column; align-items: center; }
           .company-col img { width: 90% !important; max-width: 350px !important; margin: 0 auto !important; }
-          
-          /* SMALLER TEXT FOR MOBILE VIEW */
           .hero-subtitle { font-size: 22px !important; }
           .hero-title { font-size: 55px !important; }
           .carousel-container { height: 450px !important; }
-          
-          /* REMOVED CAROUSEL BUTTONS ON MOBILE */
           .carousel-btn { display: none !important; }
+          .plan-section-container { flex-direction: column !important; text-align: center !important; padding: 40px 20px !important; margin: 50px auto !important; }
+          .plan-image-wrapper { width: 100% !important; }
+          .plan-content-wrapper { width: 100% !important; margin-top: 40px !important; }
+          .plan-check-item { justify-content: center !important; }
+
+          /* Small Badge for Mobile */
+          .call-badge {
+            bottom: 20px !important;
+            left: 20px !important;
+            padding: 8px 12px !important;
+          }
+          .badge-icon-container { padding: 6px !important; }
+          .badge-icon-svg { width: 14px !important; height: 14px !important; }
+          .badge-text-top { font-size: 7px !important; }
+          .badge-text-num { font-size: 12px !important; }
         }
         
         .nav-item { cursor: pointer; transition: 0.2s; color: #555; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 4px; height: 100px; list-style: none; }
@@ -186,7 +200,6 @@ function App() {
               </ul>
             </div>
             <div className="desktop-button-right" style={{ flex: '0 0 auto' }}>
-              {/* UPDATED: Added link to the Download Day Tours button */}
               <a 
                 href="https://drive.google.com/file/d/1u3w4y27UTtw0mUe0WI3cj0VrC-v5Ju4i/view" 
                 target="_blank" 
@@ -259,6 +272,61 @@ function App() {
         ))}
         <button onClick={prevSlide} className="carousel-btn" style={{ left: '30px' }}><ChevronLeft size={30} /></button>
         <button onClick={nextSlide} className="carousel-btn" style={{ right: '30px' }}><ChevronRight size={30} /></button>
+      </div>
+
+      {/* --- PLAN YOUR TRIP SECTION --- */}
+      <div className="plan-section-container" style={{ display: 'flex', maxWidth: '1200px', margin: '100px auto', padding: '0 20px', gap: '60px', alignItems: 'center' }}>
+        <div className="plan-image-wrapper" style={{ flex: '1', position: 'relative' }}>
+          <img 
+            src="/tour-11-768x539.jpg" 
+            alt="New Zealand Day Tour" 
+            style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', display: 'block' }} 
+          />
+          
+          {/* COMPACT FLOATING CALL BADGE (CLICKABLE & RESPONSIVE) */}
+          <a href="tel:+64212788915" className="call-badge">
+            <div className="badge-icon-container" style={{ backgroundColor: '#f0f7f7', padding: '8px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Phone size={18} color="#356E6E" className="badge-icon-svg" />
+            </div>
+            <div>
+              <p className="badge-text-top" style={{ margin: 0, fontSize: '9px', color: '#888', fontWeight: 'bold', letterSpacing: '0.5px' }}>BOOK TOUR NOW</p>
+              <p className="badge-text-num" style={{ margin: 0, fontSize: '15px', color: '#264F4F', fontWeight: '800' }}>+64 212 788 915</p>
+            </div>
+          </a>
+        </div>
+
+        <div className="plan-content-wrapper" style={{ flex: '1' }}>
+          <p style={{ fontFamily: '"Brush Script MT", cursive', color: '#356E6E', fontSize: '34px', margin: '0' }}>Get to know us</p>
+          <h2 style={{ fontSize: '52px', color: '#264F4F', margin: '10px 0 25px 0', lineHeight: '1.1', fontWeight: '800' }}>Plan Your Trip with Freedom</h2>
+          <p style={{ color: '#666', lineHeight: '1.8', fontSize: '17px', marginBottom: '35px' }}>
+            We provide specialized day tours across New Zealand's most beautiful landscapes. Our expertise ensures you experience the heart of every destination with comfort and ease.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', marginBottom: '45px' }}>
+            <div className="plan-check-item" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#264F4F', fontWeight: '600', fontSize: '16px' }}>
+              <CheckCircle2 size={22} color="#356E6E" /> Professional Local Guides
+            </div>
+            <div className="plan-check-item" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#264F4F', fontWeight: '600', fontSize: '16px' }}>
+              <CheckCircle2 size={22} color="#356E6E" /> Customized Itineraries
+            </div>
+            <div className="plan-check-item" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#264F4F', fontWeight: '600', fontSize: '16px' }}>
+              <CheckCircle2 size={22} color="#356E6E" /> Premium Transport Vehicles
+            </div>
+          </div>
+          <button style={{ 
+            backgroundColor: '#356E6E', 
+            color: 'white', 
+            border: 'none', 
+            padding: '20px 45px', 
+            borderRadius: '10px', 
+            fontWeight: 'bold', 
+            cursor: 'pointer',
+            fontSize: '16px',
+            transition: '0.3s',
+            boxShadow: '0 10px 20px rgba(53, 110, 110, 0.2)'
+          }}>
+            BOOK WITH US NOW
+          </button>
+        </div>
       </div>
 
       {/* FOOTER SECTION */}
