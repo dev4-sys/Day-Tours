@@ -186,9 +186,17 @@ function App() {
               </ul>
             </div>
             <div className="desktop-button-right" style={{ flex: '0 0 auto' }}>
-              <button style={{ backgroundColor: '#264F4F', color: 'white', border: 'none', padding: '12px 28px', borderRadius: '10px', fontWeight: 'bold' }}>
-                Download Day Tours
-              </button>
+              {/* UPDATED: Added link to the Download Day Tours button */}
+              <a 
+                href="https://drive.google.com/file/d/1u3w4y27UTtw0mUe0WI3cj0VrC-v5Ju4i/view" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <button style={{ backgroundColor: '#264F4F', color: 'white', border: 'none', padding: '12px 28px', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' }}>
+                  Download Day Tours
+                </button>
+              </a>
             </div>
             <div className="mobile-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X size={35} color="#264F4F" /> : <Menu size={35} color="#264F4F" />}
