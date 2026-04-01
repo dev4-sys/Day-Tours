@@ -25,6 +25,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // --- Carousel State & Logic ---
   const [carouselData] = useState([
@@ -43,7 +44,15 @@ function App() {
 
   const nextSlide = () => setCurrentSlide((prev) => (prev === carouselData.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? carouselData.length - 1 : prev - 1));
-  // ------------------------------
+  
+  // Helper for smooth scrolling
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMenuOpen(false);
+    }
+  };
 
   const dropdownItemStyle = {
     padding: '12px 20px',
@@ -51,7 +60,9 @@ function App() {
     fontSize: '15px',
     fontWeight: '500',
     cursor: 'pointer',
-    transition: '0.2s'
+    transition: '0.2s',
+    display: 'block',
+    textDecoration: 'none'
   };
 
   const separatorStyle = {
@@ -124,7 +135,9 @@ function App() {
           align-items: center;
           gap: 15px;
           z-index: 10;
+          transition: transform 0.3s ease;
         }
+        .call-badge:hover { transform: translateY(-5px); }
 
         @media (max-width: 1024px) {
           .top-bar { display: none !important; }
@@ -152,10 +165,14 @@ function App() {
           .feature-card { border-radius: 10px !important; }
           .counter-divider { display: none; }
           .counter-item { width: 100% !important; border-bottom: 1px solid #eee; }
+          .specialize-row { flex-direction: column !important; }
+          .specialize-text-side { padding: 40px 20px !important; text-align: center !important; }
         }
         
-        .nav-item { cursor: pointer; transition: 0.2s; color: #555; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 4px; height: 100px; list-style: none; }
+        .nav-item { cursor: pointer; transition: 0.2s; color: #555; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 4px; height: 100px; list-style: none; position: relative; }
         .nav-item:hover { color: #356E6E !important; }
+        .nav-item::after { content: ''; position: absolute; bottom: 30px; left: 0; width: 0; height: 2px; background: #356E6E; transition: width 0.3s; }
+        .nav-item:hover::after { width: 100%; }
         
         .carousel-btn {
           position: absolute; top: 50%; transform: translateY(-50%); z-index: 20; 
@@ -232,7 +249,41 @@ function App() {
         .feature-card:hover .feature-icon {
             transform: scale(1.1);
         }
+
+        .search-overlay {
+          position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+          background: rgba(38, 79, 79, 0.95); z-index: 2000;
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          padding: 20px; transition: all 0.3s ease;
+        }
+
+        @keyframes subtleScaleIn {
+          0% { transform: scale(1.1); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .animated-specialize-img {
+          animation: subtleScaleIn 1.5s cubic-bezier(0.19, 1, 0.22, 1) both;
+        }
       `}</style>
+
+      {/* SEARCH OVERLAY */}
+      {isSearchOpen && (
+        <div className="search-overlay">
+          <X 
+            size={40} 
+            color="white" 
+            style={{ position: 'absolute', top: '40px', right: '40px', cursor: 'pointer' }} 
+            onClick={() => setIsSearchOpen(false)}
+          />
+          <input 
+            type="text" 
+            placeholder="Search for tours, destinations..." 
+            style={{ width: '80%', maxWidth: '800px', background: 'transparent', border: 'none', borderBottom: '3px solid white', color: 'white', fontSize: '32px', padding: '10px', outline: 'none' }}
+            autoFocus
+          />
+          <p style={{ color: 'rgba(255,255,255,0.7)', marginTop: '20px', fontSize: '18px' }}>Press Enter to search</p>
+        </div>
+      )}
 
       {/* HEADER */}
       <header style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
@@ -259,16 +310,16 @@ function App() {
         <nav style={{ backgroundColor: 'white', height: '100px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
           <div style={{ maxWidth: '1300px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%', padding: '0 20px' }}>
             <div style={{ flex: '0 0 auto' }}>
-              <img src="/logo.png" className="logo-img" alt="Freedom Logo" style={{ height: '75px', display: 'block' }} />
+              <img src="/logo.png" className="logo-img" alt="Freedom Logo" style={{ height: '75px', display: 'block', cursor: 'pointer' }} onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} />
             </div>
             <div className="desktop-nav-center" style={{ flex: '1', display: 'flex', justifyContent: 'center' }}>
               <ul style={{ display: 'flex', gap: '35px', margin: 0, padding: 0 }}>
-                <li className="nav-item">Home</li>
+                <li className="nav-item" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>Home</li>
                 <li className="nav-item">Van Rentals</li>
                 <li className="nav-item" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)} style={{ position: 'relative' }}>
                   Day Tours <ChevronDown size={14} />
                   {isDropdownOpen && (
-                    <div style={{ position: 'absolute', top: '90px', left: '0', backgroundColor: 'white', minWidth: '220px', boxShadow: '0 8px 20px rgba(0,0,0,0.1)', borderRadius: '6px', padding: '5px 0', zIndex: 1001, borderTop: '3px solid #356E6E' }}>
+                    <div style={{ position: 'absolute', top: '100px', left: '0', backgroundColor: 'white', minWidth: '220px', boxShadow: '0 8px 20px rgba(0,0,0,0.1)', borderRadius: '6px', padding: '5px 0', zIndex: 1001, borderTop: '3px solid #356E6E' }}>
                       <div className="dropdown-link" style={dropdownItemStyle}>Auckland</div>
                       <div style={separatorStyle}></div>
                       <div className="dropdown-link" style={dropdownItemStyle}>Christchurch</div>
@@ -277,12 +328,13 @@ function App() {
                     </div>
                   )}
                 </li>
-                <li className="nav-item">Contact</li>
+                <li className="nav-item" onClick={() => scrollToSection('contact-footer')}>Contact</li>
+                <li className="nav-item" onClick={() => setIsSearchOpen(true)}><Search size={18} /></li>
               </ul>
             </div>
             <div className="desktop-button-right" style={{ flex: '0 0 auto' }}>
               <a href="https://drive.google.com/file/d/1u3w4y27UTtw0mUe0WI3cj0VrC-v5Ju4i/view" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                <button style={{ backgroundColor: '#264F4F', color: 'white', border: 'none', padding: '12px 28px', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' }}>
+                <button style={{ backgroundColor: '#264F4F', color: 'white', border: 'none', padding: '12px 28px', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}>
                   Download Day Tours
                 </button>
               </a>
@@ -293,7 +345,7 @@ function App() {
           </div>
           {isMenuOpen && (
             <div className="mobile-menu-overlay">
-              <div style={{ padding: '20px', borderBottom: '1px solid #eee', fontWeight: '600' }}>Home</div>
+              <div style={{ padding: '20px', borderBottom: '1px solid #eee', fontWeight: '600' }} onClick={() => { setIsMenuOpen(false); window.scrollTo(0,0); }}>Home</div>
               <div style={{ padding: '20px', borderBottom: '1px solid #eee', fontWeight: '600' }}>Van Rentals</div>
               <div style={{ padding: '20px', borderBottom: '1px solid #eee', fontWeight: '600', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}>
                 Day Tours {isMobileDropdownOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -305,7 +357,8 @@ function App() {
                   <div style={{ padding: '15px 40px', borderBottom: '1px solid #eee', color: '#666' }}>Queenstown</div>
                 </div>
               )}
-              <div style={{ padding: '20px', borderBottom: '1px solid #eee', fontWeight: '600' }}>Contact</div>
+              <div style={{ padding: '20px', borderBottom: '1px solid #eee', fontWeight: '600' }} onClick={() => scrollToSection('contact-footer')}>Contact</div>
+              <div style={{ padding: '20px', borderBottom: '1px solid #eee', fontWeight: '600', color: '#356E6E' }} onClick={() => { setIsSearchOpen(true); setIsMenuOpen(false); }}>Search Tours</div>
             </div>
           )}
         </nav>
@@ -340,12 +393,12 @@ function App() {
             </div>
           )
         ))}
-        <button onClick={prevSlide} className="carousel-btn" style={{ left: '30px' }}><ChevronLeft size={30} /></button>
-        <button onClick={nextSlide} className="carousel-btn" style={{ right: '30px' }}><ChevronRight size={30} /></button>
+        <button onClick={prevSlide} className="carousel-btn" style={{ left: '30px' }} aria-label="Previous slide"><ChevronLeft size={30} /></button>
+        <button onClick={nextSlide} className="carousel-btn" style={{ right: '30px' }} aria-label="Next slide"><ChevronRight size={30} /></button>
       </div>
 
       {/* --- SECTION 2: PLAN YOUR TRIP --- */}
-      <div className="plan-section-container" style={{ display: 'flex', maxWidth: '1200px', margin: '100px auto', padding: '0 20px', gap: '60px', alignItems: 'center' }}>
+      <div id="plan-trip" className="plan-section-container" style={{ display: 'flex', maxWidth: '1200px', margin: '100px auto', padding: '0 20px', gap: '60px', alignItems: 'center' }}>
         <div className="plan-image-wrapper" style={{ flex: '1', position: 'relative' }}>
           <img src="/tour-11-768x539.jpg" alt="New Zealand Day Tour" style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', display: 'block' }} />
           
@@ -421,7 +474,7 @@ function App() {
         </div>
       </div>
 
-      {/* --- NEW COUNTER SECTION SHIFTED ABOVE FOOTER --- */}
+      {/* --- COUNTER SECTION --- */}
       <div style={{ padding: '80px 0', borderTop: '1px solid #eee', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
           
@@ -453,8 +506,31 @@ function App() {
         </div>
       </div>
 
+      {/* --- SECTION: SPECIALIZES IN DAY TOURS (MOVED ABOVE FOOTER) --- */}
+      <div style={{ backgroundColor: '#fff', overflow: 'hidden', paddingBottom: '80px' }}>
+        <div className="specialize-row" style={{ display: 'flex', alignItems: 'stretch' }}>
+          <div style={{ flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F0F8F8' }}>
+            <div style={{ maxWidth: '400px', overflow: 'hidden', borderRadius: '20px' }}>
+              <img 
+                src="/tour-17.jpg" 
+                alt="Freedom Specialist" 
+                className="animated-specialize-img"
+                style={{ width: '100%', height: 'auto', display: 'block' }} 
+              />
+            </div>
+          </div>
+          <div className="specialize-text-side" style={{ flex: '1', padding: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <p style={{ fontFamily: '"Brush Script MT", cursive', color: '#356E6E', fontSize: '32px', margin: '0 0 10px 0' }}>Freedom Tourism Limited</p>
+            <h2 style={{ fontSize: '48px', color: '#264F4F', margin: '0 0 25px 0', lineHeight: '1.2', fontWeight: '800' }}>Specializes in Daytours From Auckland</h2>
+            <p style={{ color: '#666', fontSize: '15px', lineHeight: '1.6', maxWidth: '500px', margin: 0, textTransform: 'uppercase', fontWeight: '600' }}>
+              One of the Largest New Zealand Based IBOs, Expert in "INDIAN FRIENDS & FAMILY GROUP TOURS".
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* FOOTER SECTION */}
-      <footer style={{ borderTop: '1px dashed #ccc', paddingTop: '60px', backgroundColor: '#fff' }}>
+      <footer id="contact-footer" style={{ borderTop: '1px dashed #ccc', paddingTop: '60px', backgroundColor: '#fff' }}>
         <div className="footer-container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div style={{ flex: '1' }}>
             <div style={{ color: '#356E6E', fontWeight: 'bold', fontSize: '18px', marginBottom: '25px', letterSpacing: '1px' }}>OUR PROCESS</div>
