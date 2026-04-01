@@ -528,7 +528,66 @@ function App() {
           </div>
         </div>
       </div>
+      <section style={{
+        backgroundColor: '#356363',
+        backgroundImage: 'linear-gradient(rgba(53, 99, 99, 0.8), rgba(53, 99, 99, 0.8)), url("https://www.transparenttextures.com/patterns/topography.png")',
+        padding: '60px 20px',
+        color: 'white',
+        width: '100%',
+        boxSizing: 'border-box'
+      }}>
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '30px'
+      }}>
+      <div style={{ textAlign: 'left' }}>
+      <p style={{ 
+        fontFamily: '"Brush Script MT", cursive', 
+        fontSize: '28px', 
+        margin: '0',
+        fontWeight: 'normal'
+      }}>
+        Plan your trip with us
+      </p>
+      <h3 style={{ 
+        fontSize: 'clamp(24px, 4vw, 40px)', 
+        margin: '5px 0 0 0', 
+        fontWeight: 'bold',
+        letterSpacing: '0.5px'
+      }}>
+        Ready for an unforgettable tour?
+      </h3>
+    </div>
 
+    <button style={{
+      backgroundColor: '#4db5b5',
+      color: 'white',
+      border: 'none',
+      padding: '15px 35px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      textTransform: 'uppercase',
+      transition: 'background-color 0.3s ease'
+    }}>
+      BOOK TOUR NOW
+    </button>
+  </div>
+
+  {/* Responsive Style Helper */}
+  <style dangerouslySetInnerHTML={{ __html: `
+    @media (max-width: 768px) {
+      section div { justify-content: center !important; text-align: center !important; }
+      button { width: 100%; max-width: 320px; }
+    }
+  `}} />
+  </section>
       {/* FOOTER SECTION */}
       <footer id="contact-footer" style={{ borderTop: '1px dashed #ccc', paddingTop: '60px', backgroundColor: '#fff' }}>
         <div className="footer-container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
