@@ -266,25 +266,6 @@ function App() {
         }
       `}</style>
 
-      {/* SEARCH OVERLAY */}
-      {isSearchOpen && (
-        <div className="search-overlay">
-          <X 
-            size={40} 
-            color="white" 
-            style={{ position: 'absolute', top: '40px', right: '40px', cursor: 'pointer' }} 
-            onClick={() => setIsSearchOpen(false)}
-          />
-          <input 
-            type="text" 
-            placeholder="Search for tours, destinations..." 
-            style={{ width: '80%', maxWidth: '800px', background: 'transparent', border: 'none', borderBottom: '3px solid white', color: 'white', fontSize: '32px', padding: '10px', outline: 'none' }}
-            autoFocus
-          />
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginTop: '20px', fontSize: '18px' }}>Press Enter to search</p>
-        </div>
-      )}
-
       {/* HEADER */}
       <header style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
         <div className="top-bar" style={{ backgroundColor: '#356E6E', color: 'white', height: '45px' }}>
@@ -328,9 +309,7 @@ function App() {
                     </div>
                   )}
                 </li>
-                <li className="nav-item" onClick={() => scrollToSection('contact-footer')}>Contact</li>
-                <li className="nav-item" onClick={() => setIsSearchOpen(true)}><Search size={18} /></li>
-              </ul>
+                <li className="nav-item" onClick={() => scrollToSection('contact-footer')}>Contact</li>              </ul>
             </div>
             <div className="desktop-button-right" style={{ flex: '0 0 auto' }}>
               <a href="https://drive.google.com/file/d/1u3w4y27UTtw0mUe0WI3cj0VrC-v5Ju4i/view" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
